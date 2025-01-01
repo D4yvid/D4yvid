@@ -1,0 +1,85 @@
+pre:has(.code) {
+    position: relative;
+
+    overflow-x: auto;
+    text-wrap: wrap;
+
+    background: rgb(var(--bg1));
+    border-radius: 0.9rem;
+
+    margin-block-start: 12px;
+    padding-block-start: 2.2rem;
+    padding-block-end: 0.8rem;
+
+    padding-inline: 0.8rem;
+}
+
+pre:has(.code)::before {
+    position: absolute;
+    display: block;
+
+    top: 0;
+    left: 0;
+
+    border-top-left-radius: 0.9rem;
+    border-top-right-radius: 0.9rem;
+
+    width: 100%;
+    padding: 0.4rem 1rem;
+
+    content: 'Code';
+
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+}
+
+.code-doctag,
+.code-keyword,
+.code-meta .hljs-keyword,
+.code-template-tag,
+.code-template-variable,
+.code-type,
+.code-variable.language_ {
+    color: rgb(var(--red));
+}
+
+.code-title,
+.code-title.class_,
+.code-title.class_.inherited__,
+.code-title.function_ {
+    color: rgb(var(--yellow));
+}
+
+.code-attr,
+.code-attribute,
+.code-literal,
+.code-meta,
+.code-number,
+.code-operator,
+.code-variable,
+.code-selector-attr,
+.code-selector-class,
+.code-selector-id {
+    color: rgb(var(--purple));
+}
+
+.code-regexp,
+.code-string,
+.code-meta .code-string {
+    color: rgb(var(--green));
+}
+
+.code-built_in,
+.code-symbol,
+.code-name,
+.code-quote,
+.code-selector-tag,
+.code-selector-pseudo {
+    color: rgb(var(--blue));
+}
+
+.code-comment,
+.code-code,
+.code-formula {
+    color: rgb(var(--gray));
+}

@@ -1,0 +1,84 @@
+.article-content {
+    width: min(120ch, 100% - 4rem);
+    margin-inline: auto;
+}
+
+.article-footer {
+    display: flex;
+
+    justify-content: end;
+    align-items: center;
+
+    padding-block: 1rem;
+    margin-block-end: 2rem;
+}
+
+.article-header {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: start;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.article-author,
+.article-metadata {
+    display: flex;
+    flex-wrap: wrap;
+
+    flex: 1;
+    min-width: fit-content;
+}
+
+.article-author > *,
+.article-metadata > * {
+    min-width: fit-content;
+}
+
+.article-author {
+    gap: .5rem;
+    align-items: center;
+}
+
+.article-author .name {
+    font-weight: 500;
+}
+
+.article-author .email {
+    color: rgb(var(--gray));
+    font-size: .7rem;
+}
+
+.article-author .email::before {
+    content: '<';
+}
+
+.article-author .email::after {
+    content: '>';
+}
+
+.article-metadata {
+    flex-direction: column;
+
+    align-items: end;
+    justify-content: end;
+
+    gap: 0.1rem;
+}
+
+.article-metadata .topic::before {
+    content: 'Topic: ';
+    color: rgb(var(--fg0));
+}
+
+.article-metadata .date::before {
+    content: 'Date: ';
+    color: rgb(var(--fg0));
+}
+
+.article-metadata .date,
+.article-metadata .topic {
+    color: rgb(var(--gray));
+}

@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build": "cd external/compose.js && pnpm build && cd - && cd external/compose-domstring.js && pnpm build && cd - && tsc",
     "start": "node ."
   },
   "type": "module",
@@ -16,20 +16,40 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@putout/minify": "^4.8.4",
     "@types/hast": "^3.0.4",
+    "@types/html-minifier": "^4.0.5",
+    "@types/html-minifier-terser": "^7.0.2",
+    "clean-css": "^5.3.3",
+    "compose-domstring.js": "link:external/compose-domstring.js",
+    "compose.js": "link:external/compose.js",
     "glob": "^11.0.0",
+    "html-minifier": "^4.0.0",
+    "html-minifier-terser": "^7.2.0",
+    "minify": "link:@types/@putout/minify",
+    "minifyjs": "^0.2.0",
+    "rehype-highlight": "^7.0.1",
+    "rehype-katex": "^7.0.1",
     "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
+    "remark-blockquote-alerts": "^0.0.7",
+    "remark-emoji": "^5.0.1",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.1",
+    "terser": "^5.37.0",
     "typescript": "^5.7.2",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
     "vfile-matter": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2"
+    "@fec/remark-a11y-emoji": "^4.0.2",
+    "@types/clean-css": "^4.2.11",
+    "@types/node": "^22.10.2",
+    "lib": "link:@types/vfile-matter/lib",
+    "remark-a11y-emoji": "link:@types/@fec/remark-a11y-emoji"
   }
 }
