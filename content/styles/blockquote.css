@@ -1,0 +1,64 @@
+blockquote {
+    --blockquote-color: var(--gray);
+
+    margin-block: 0.8rem;
+
+    padding-inline-start: 1.2rem;
+
+    transition: border-inline-start var(--animation-duration) linear;
+    border-inline-start: 0.2rem solid rgba(var(--blockquote-color), 0.5);
+}
+
+blockquote:hover, blockquote:focus {
+    border-inline-start: 0.2rem solid rgb(var(--blockquote-color));
+}
+
+blockquote::before {
+    content: var(--blockquote-title);
+    color: rgb(var(--blockquote-color));
+
+    padding-inline-start: 28px;
+
+    background-image: var(--blockquote-icon);
+    background-position-y: 50%;
+    background-repeat: no-repeat;
+
+    line-height: 2;
+}
+
+blockquote.blockquote-note, blockquote.blockquote-tip {
+    --blockquote-color: var(--blue);
+}
+
+blockquote.blockquote-important, blockquote.blockquote-warning {
+    --blockquote-color: var(--yellow);
+}
+
+blockquote.blockquote-caution {
+    --blockquote-color: var(--red);
+}
+
+blockquote.blockquote-tip::before {
+    --blockquote-icon: var(--lightbulb-icon);
+    --blockquote-title: 'Tip';
+}
+
+blockquote.blockquote-note::before {
+    --blockquote-icon: var(--information-icon);
+    --blockquote-title: 'Note';
+}
+
+blockquote.blockquote-important {
+    --blockquote-icon: var(--important-icon);
+    --blockquote-title: 'Important';
+}
+
+blockquote.blockquote-warning {
+    --blockquote-icon: var(--warning-icon);
+    --blockquote-title: 'Warning';
+}
+
+blockquote.blockquote-caution {
+    --blockquote-icon: var(--error-icon);
+    --blockquote-title: 'Caution';
+}

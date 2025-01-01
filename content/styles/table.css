@@ -1,0 +1,23 @@
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    overflow: clip;
+    border-spacing: 0;
+
+    border-radius: 1rem;
+
+    margin-block: 0.8rem;
+    background: rgb(var(--bg1));
+}
+
+table > thead {
+
+    background: rgb(var(--bg2));
+}
+
+td, tr, th {
+    padding-block: 0.4rem;
+    padding-inline: 0.8rem;
+}

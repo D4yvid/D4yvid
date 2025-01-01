@@ -1,0 +1,6 @@
+[submodule "external/compose.js"]
+	path = external/compose.js
+	url = https://github.com/D4yvid/compose.js
+[submodule "external/compose-domstring.js"]
+	path = external/compose-domstring.js
+	url = https://github.com/D4yvid/compose-domstring.js

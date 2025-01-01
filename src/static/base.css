@@ -1,0 +1,233 @@
+:root {
+    --animation-duration: 200ms;
+
+    --dark0_hard: 29, 32, 33;
+    --dark0: 40, 40, 40;
+    --dark0_soft: 50, 48, 47;
+    --dark1: 60, 56, 54;
+    --dark2: 80, 73, 69;
+    --dark3: 102, 92, 84;
+    --dark4: 124, 111, 100;
+    --dark4_256: 124, 111, 100;
+
+    --gray_245: 146, 131, 116;
+    --gray_244: 146, 131, 116;
+
+    --light0_hard: 249, 245, 215;
+    --light0: 251, 241, 199;
+    --light0_soft: 242, 229, 188;
+    --light1: 235, 219, 178;
+    --light2: 213, 196, 161;
+    --light3: 189, 174, 147;
+    --light4: 168, 153, 132;
+    --light4_256: 168, 153, 132;
+
+    --bright_red: 251, 73, 52;
+    --bright_green: 184, 187, 38;
+    --bright_yellow: 250, 189, 47;
+    --bright_blue: 131, 165, 152;
+    --bright_purple: 211, 134, 155;
+    --bright_aqua: 142, 192, 124;
+    --bright_orange: 254, 128, 25;
+
+    --neutral_red: 204, 36, 29;
+    --neutral_green: 152, 151, 26;
+    --neutral_yellow: 215, 153, 33;
+    --neutral_blue: 69, 133, 136;
+    --neutral_purple: 177, 98, 134;
+    --neutral_aqua: 104, 157, 106;
+    --neutral_orange: 214, 93, 14;
+
+    --faded_red: 157, 0, 6;
+    --faded_green: 121, 116, 14;
+    --faded_yellow: 181, 118, 20;
+    --faded_blue: 7, 102, 120;
+    --faded_purple: 143, 63, 113;
+    --faded_aqua: 66, 123, 88;
+    --faded_orange: 175, 58, 3;
+
+	--bg0: var(--light0);
+	--bg1: var(--light1);
+	--bg2: var(--light2);
+	--bg3: var(--light3);
+	--bg4: var(--light4);
+	--gray: var(--gray_244);
+	--fg0: var(--dark0);
+	--fg1: var(--dark1);
+	--fg2: var(--dark2);
+	--fg3: var(--dark3);
+	--fg4: var(--dark4);
+	--red: var(--faded_red);
+	--green: var(--faded_green);
+	--yellow: var(--faded_yellow);
+	--blue: var(--faded_blue);
+	--purple: var(--faded_purple);
+	--aqua: var(--faded_aqua);
+	--orange: var(--faded_orange);
+
+	--font-display: -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-mono: 'Courier New', Courier, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg0: var(--dark0);
+		--bg1: var(--dark1);
+		--bg2: var(--dark2);
+		--bg3: var(--dark3);
+		--bg4: var(--dark4);
+
+		--gray: var(--gray_245);
+
+		--fg0: var(--light0);
+		--fg1: var(--light1);
+		--fg2: var(--light2);
+		--fg3: var(--light3);
+		--fg4: var(--light4);
+
+		--red: var(--bright_red);
+		--green: var(--bright_green);
+		--yellow: var(--bright_yellow);
+		--blue: var(--bright_blue);
+		--purple: var(--bright_purple);
+		--aqua: var(--bright_aqua);
+		--orange: var(--bright_orange);
+	}
+}
+
+@media (prefers-reduced-motion) {
+    :root {
+        --animation-duration: 0ms;
+    }
+}
+
+*, *::before, *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    font: inherit;
+}
+
+img, picture, svg, video {
+    display: block;
+    max-width: 100%;
+}
+
+html {
+    background: rgb(var(--bg0));
+    color: rgb(var(--fg0));
+}
+
+body {
+    max-width: 100vw;
+    min-width: 100vw;
+
+    max-width: 100svw;
+    min-width: 100svw;
+
+    min-height: 100vh;
+    min-height: 100svh;
+
+    overflow-x: hidden;
+
+    font-family: var(--font-display);
+    line-height: 1.6;
+}
+
+ul, ol {
+    margin-block: 0.5rem;
+
+    margin-inline-start: 2rem;
+}
+
+li {
+    margin-block: 0.3rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-block: 0.5rem;
+}
+
+a, a:visited {
+    color: rgb(var(--blue));
+
+    text-decoration-style: wavy;
+    text-decoration-color: transparent;
+
+    transition: text-decoration var(--animation-duration) ease-in-out;
+}
+
+a:focus, a:hover {
+    text-decoration-color: rgb(var(--blue));
+}
+
+b, strong {
+    font-weight: 600;
+}
+
+i, em {
+    font-style: italic;
+}
+
+pre, code {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+
+    color: rgb(var(--fg1));
+
+    line-height: 1.7;
+}
+
+code:not(.code) {
+    background: rgb(var(--bg1));
+
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.9rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-block: 1.3rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+h5 {
+    font-size: 1.1rem;
+}
+
+h6 {
+    font-size: 1.0rem;
+}
+
+hr {
+    min-height: 2px;
+
+    border: none;
+    background: rgb(var(--gray));
+
+    margin-block: 1.2rem;
+}
+
+button {
+    border: none;
+
+    background: rgb(var(--bg2));
+    color: rgb(var(--fg1));
+
+    padding-inline: .4rem;
+    padding-block: .2rem;
+    border-radius: .4rem;
+}
