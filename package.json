@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsc --watch",
-    "build": "cd external/compose.js && pnpm build && cd - && cd external/compose-domstring.js && pnpm build && cd - && tsc",
+    "build": "tsc -p external/compose.js/ && tsc -p external/compose-domstring.js/ && tsc",
     "start": "node ."
   },
   "type": "module",

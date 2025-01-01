@@ -3,7 +3,11 @@
     "target": "es2017",
     "module": "ES2020",
     "allowJs": true,
-    "rootDir": "./",
+    "rootDirs": [
+      "./",
+      "./external/compose.js",
+      "./external/compose-domstring.js",
+    ],
     "outDir": "./dist",
     "moduleResolution": "node",
     "declaration": true,
