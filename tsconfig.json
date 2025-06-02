@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "ES2020",
+    "target": "ESNext",
+    "module": "ESNext",
     "allowJs": true,
     "rootDirs": [
       "./",
@@ -34,6 +34,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "allowUnusedLabels": true,
     "allowUnreachableCode": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true
   },
   "exclude": ["dist/", "test.mjs"]

@@ -189,3 +189,18 @@ Here is a footnote reference[^1].
 Markdown supports emoji using `:` syntax:
 
 Here is a smiley face: :smile:
+
+## 13. JS Scripting!!
+
+<button class="boton">La boton</button>
+
+```js page.script
+const boton = document.querySelector(".boton")
+
+boton.onclick = () => {
+    boton.innerText = "La Boton clicked"
+
+    alert("La boton clicked")
+};
+```
+

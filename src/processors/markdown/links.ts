@@ -2,8 +2,7 @@ import { Element, Root } from "hast";
 import { CONTINUE, visit } from "unist-util-visit";
 import { VFile } from "vfile-matter/lib";
 
-import { MARKDOWN_EXTENSION } from "./processor.js";
-
+const MARKDOWN_EXTENSION = ".md";
 const randomDigits = () => Math.floor(Math.random() * 100000000000000)
 
 // Generate random url base to parse even if the URL is incomplete, for example, `#foo-bar`,
@@ -31,8 +30,6 @@ export const fixMarkdownLinks = () => (tree: Root, file: VFile) =>
             // Doesn't link to a markdown file
             return CONTINUE;
         }
-
-        let oldPathname = url.pathname;
 
         url.pathname = `${url.pathname.slice(0, -1 * MARKDOWN_EXTENSION.length)}.html`;
 

@@ -46,53 +46,57 @@
     --faded_aqua: 66, 123, 88;
     --faded_orange: 175, 58, 3;
 
-	--bg0: var(--light0);
-	--bg1: var(--light1);
-	--bg2: var(--light2);
-	--bg3: var(--light3);
-	--bg4: var(--light4);
-	--gray: var(--gray_244);
-	--fg0: var(--dark0);
-	--fg1: var(--dark1);
-	--fg2: var(--dark2);
-	--fg3: var(--dark3);
-	--fg4: var(--dark4);
-	--red: var(--faded_red);
-	--green: var(--faded_green);
-	--yellow: var(--faded_yellow);
-	--blue: var(--faded_blue);
-	--purple: var(--faded_purple);
-	--aqua: var(--faded_aqua);
-	--orange: var(--faded_orange);
+    --bg0: var(--light0);
+    --bg1: var(--light1);
+    --bg2: var(--light2);
+    --bg3: var(--light3);
+    --bg4: var(--light4);
+    --gray: var(--gray_244);
+    --fg0: var(--dark0);
+    --fg1: var(--dark1);
+    --fg2: var(--dark2);
+    --fg3: var(--dark3);
+    --fg4: var(--dark4);
+    --red: var(--faded_red);
+    --green: var(--faded_green);
+    --yellow: var(--faded_yellow);
+    --blue: var(--faded_blue);
+    --purple: var(--faded_purple);
+    --aqua: var(--faded_aqua);
+    --orange: var(--faded_orange);
 
-	--font-display: -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	--font-mono: 'Courier New', Courier, monospace;
+    --font-display: -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+
+    --rounded-corner: 8px;
+
+    font-size: 16px;
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--bg0: var(--dark0);
-		--bg1: var(--dark1);
-		--bg2: var(--dark2);
-		--bg3: var(--dark3);
-		--bg4: var(--dark4);
+    :root {
+        --bg0: var(--dark0);
+        --bg1: var(--dark1);
+        --bg2: var(--dark2);
+        --bg3: var(--dark3);
+        --bg4: var(--dark4);
 
-		--gray: var(--gray_245);
+        --gray: var(--gray_245);
 
-		--fg0: var(--light0);
-		--fg1: var(--light1);
-		--fg2: var(--light2);
-		--fg3: var(--light3);
-		--fg4: var(--light4);
+        --fg0: var(--light0);
+        --fg1: var(--light1);
+        --fg2: var(--light2);
+        --fg3: var(--light3);
+        --fg4: var(--light4);
 
-		--red: var(--bright_red);
-		--green: var(--bright_green);
-		--yellow: var(--bright_yellow);
-		--blue: var(--bright_blue);
-		--purple: var(--bright_purple);
-		--aqua: var(--bright_aqua);
-		--orange: var(--bright_orange);
-	}
+        --red: var(--bright_red);
+        --green: var(--bright_green);
+        --yellow: var(--bright_yellow);
+        --blue: var(--bright_blue);
+        --purple: var(--bright_purple);
+        --aqua: var(--bright_aqua);
+        --orange: var(--bright_orange);
+    }
 }
 
 @media (prefers-reduced-motion) {
@@ -132,7 +136,12 @@ body {
     overflow-x: hidden;
 
     font-family: var(--font-display);
+    font-size: 1rem;
     line-height: 1.6;
+}
+
+small {
+    font-size: 0.889rem;
 }
 
 ul, ol {
@@ -147,7 +156,8 @@ li {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
-    margin-block: 0.5rem;
+    margin-block: 0.9rem;
+    margin-block-end: 1.5rem;
 }
 
 a, a:visited {
@@ -188,28 +198,27 @@ code:not(.code) {
 }
 
 h1 {
-    font-size: 1.5rem;
-    margin-block: 1.3rem;
+    font-size: 2.027rem;
 }
 
 h2 {
-    font-size: 1.4rem;
+    font-size: 1.802rem;
 }
 
 h3 {
-    font-size: 1.3rem;
+    font-size: 1.602rem;
 }
 
 h4 {
-    font-size: 1.2rem;
+    font-size: 1.424rem;
 }
 
 h5 {
-    font-size: 1.1rem;
+    font-size: 1.266rem;
 }
 
 h6 {
-    font-size: 1.0rem;
+    font-size: 1.125rem;
 }
 
 hr {
