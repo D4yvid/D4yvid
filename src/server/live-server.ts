@@ -13,8 +13,6 @@ async function startFileWatcher(signal: AbortSignal, emit: (path: Path) => any) 
     const watcher = watch(contentDirectory().value, { signal, recursive: true, persistent: true });
 
     try {
-        let lastEvent = 0;
-
         async function handleEvent(event: FileChangeInfo<string>) {
             if (!event.filename)
                 return;
@@ -23,10 +21,6 @@ async function startFileWatcher(signal: AbortSignal, emit: (path: Path) => any) 
                 /// Sometimes it returns a inode number, and i don't know why.
                 return;
 
-            if (Date.now() - lastEvent < 100) {
-                return;
-            }
-
             const path = joinPaths(contentDirectory(), event.filename);
 
             if (config.liveServer.ignoreChanges(path))
@@ -34,8 +28,6 @@ async function startFileWatcher(signal: AbortSignal, emit: (path: Path) => any) 
 
             if (isFilePathIgnored(path))
                 return;
-
-            lastEvent = Date.now();
 
             emit(path);
         }
