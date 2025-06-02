@@ -1,6 +1,7 @@
 import { Element, Root } from "hast";
 import { CONTINUE, visit } from "unist-util-visit";
 import { VFile } from "vfile-matter/lib";
+import { config } from "../../config.js";
 
 const MARKDOWN_EXTENSION = ".md";
 const randomDigits = () => Math.floor(Math.random() * 100000000000000)
@@ -33,7 +34,7 @@ export const fixMarkdownLinks = () => (tree: Root, file: VFile) =>
 
         url.pathname = `${url.pathname.slice(0, -1 * MARKDOWN_EXTENSION.length)}.html`;
 
-        const finalHref = url.toString().replace(LOCAL_DOMAIN_URL.toString(), '');
+        const finalHref = url.toString().replace(LOCAL_DOMAIN_URL.toString(), config.baseURL);
 
         node.properties['href'] = finalHref;
 
