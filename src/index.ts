@@ -1,35 +1,72 @@
+import path from "path";
 import { mkdir, rm } from "node:fs/promises";
-import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getAllFilesFromContent } from "./content.js";
-import { processFile } from "./processor.js";
+import { getContentFiles } from "./content.js";
+import { copyUnprocessedFiles, process } from "./processors/index.js";
+import { joinPaths, Path, pathOf } from "./path/path.js";
+import { existsSync, mkdirSync } from "node:fs";
+import { transform, writeUntransformedFiles } from "./transformers/index.js";
+import { parseArguments } from "./arguments/arguments.js";
+import { startLiveServer } from "./server/live-server.js";
+import { timeIt } from "./time/time.js";
 
-export const ROOT_DIRECTORY = root();
+export function contentDirectory() {
+    const directory = joinPaths(rootDirectory(), "content");
 
-export const CONTENT_DIRECTORY = path.join(ROOT_DIRECTORY, "content");
-export const BUILD_DIRECTORY = path.join(ROOT_DIRECTORY, "build");
+    if (!existsSync(directory.value)) {
+        mkdirSync(directory.value);
+    }
 
-export function root() {
-  return path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+    return directory;
+}
+
+export function buildDirectory() {
+    const directory =  joinPaths(rootDirectory(), "build");
+
+    if (!existsSync(directory.value)) {
+        mkdirSync(directory.value);
+    }
+
+    return directory;
+}
+
+export function cacheDirectory() {
+    const directory = joinPaths(rootDirectory(), ".cache");
+
+    if (!existsSync(directory.value)) {
+        mkdirSync(directory.value);
+    }
+
+    return directory;
+}
+
+export function rootDirectory() {
+    return pathOf(path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".."));
 }
 
 async function main() {
-  console.log("Removing old build directory...");
-  await rm(BUILD_DIRECTORY, { force: true, recursive: true }).catch();
+    const args = parseArguments();
 
-  console.log("Creating build directory...");
-  await mkdir(BUILD_DIRECTORY, { recursive: true });
+    console.log("Creating build directory...");
+    await mkdir(buildDirectory().value, { recursive: true });
 
-  console.log("Finding all files in", CONTENT_DIRECTORY, "...");
-  const files = await getAllFilesFromContent();
+    if (args.serve) {
+        startLiveServer(args.port);
 
-  console.log("Processing", files.length, "file" + (files.length == 1 ? "" : "s") + "...");
-  const processorTasks = files.map(processFile);
+        return;
+    }
 
-  console.log("Waiting for all tasks to finish...");
-  await Promise.all(processorTasks).catch(console.error);
+    console.log("Finding all files in", contentDirectory().value, "...");
+    const { files: list } = await getContentFiles({ changedOnly: true });
 
-  console.log("Done!");
+    await timeIt `Processing took` (async () => {
+        await Promise.all(
+            list.map(process)
+                .filter(copyUnprocessedFiles)
+                .map(transform)
+                .filter(writeUntransformedFiles)
+        );
+    });
 }
 
 main();
