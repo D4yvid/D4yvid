@@ -44,6 +44,8 @@ jobs:
         run: pnpm run build
       - name: Run project
         run: pnpm run start
+        env:
+          NODE_ENV: production
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
