@@ -1,7 +1,7 @@
 import path from "path";
 import { mkdir, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { getContentFiles } from "./content.js";
+import { getContentFiles, processContent } from "./content.js";
 import { copyUnprocessedFiles, process } from "./processors/index.js";
 import { joinPaths, Path, pathOf } from "./path/path.js";
 import { existsSync, mkdirSync } from "node:fs";
@@ -56,17 +56,13 @@ async function main() {
         return;
     }
 
-    console.log("Finding all files in", contentDirectory().value, "...");
-    const { files: list } = await getContentFiles({ changedOnly: true });
-
-    await timeIt `Processing took` (async () => {
-        await Promise.all(
-            list.map(process)
-                .filter(copyUnprocessedFiles)
-                .map(transform)
-                .filter(writeUntransformedFiles)
-        );
+    await processContent({
+        settings: {
+            changedOnly: true
+        }
     });
+
+    console.log("Done!");
 }
 
 main();

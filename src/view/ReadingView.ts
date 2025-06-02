@@ -2,7 +2,7 @@ import { Composable, Conditional } from "compose.js";
 import { MarkdownDocumentFrontmatter } from "../processors/markdown/frontmatter.js";
 import { MarkdownDocumentProperties } from "../processors/markdown/content.js";
 import { MarkdownScripts } from "../processors/markdown/content-script.js";
-import { Ul, Li, Link, Title, Meta, Div, Head, HTML, Main, RawHTML, Script, Body, Button, Style, H3, H1, H4, Blockquote } from "compose-domstring.js";
+import { Ul, Li, Link, Title, Meta, Div, Head, HTML, Main, RawHTML, Script, Body, Button, Style, H3, H1, H4, Blockquote, Header, Span } from "compose-domstring.js";
 import { minifyCSS } from "../minifier/minifier.js";
 import { rootDirectory } from "../index.js";
 import { readFileSync } from "fs";
@@ -10,6 +10,7 @@ import path from "path";
 import { Small } from "compose-domstring.js";
 import { joinPaths } from "../path/path.js";
 import { isLiveServerMode } from "../server/live-server.js";
+import { WebsiteHeader } from "./components/ContentHeader.js";
 
 type ReadingPageProps = {
     htmlContent: string;
@@ -19,63 +20,19 @@ type ReadingPageProps = {
     scripts?: MarkdownScripts;
 };
 
-const READING_PAGE_SETTINGS_DIALOG_ID = "reading-view-settings";
-
 const STATIC_CSS_ROOT = joinPaths(rootDirectory(), "src", "static");
 
 const STATIC_CSS_BLOCKS = [
-    minifyCSS(readFileSync(joinPaths(STATIC_CSS_ROOT, "base.css").value).toString()),
-    minifyCSS(readFileSync(joinPaths(STATIC_CSS_ROOT, "reading-view.css").value).toString()),
+    minifyCSS(readFileSync(joinPaths(STATIC_CSS_ROOT, "base.css").value).toString())
 ];
-
-const SettingsDialog = Composable(() => {
-    const BackgroundSettings = Composable(() => (
-        Ul({ class: 'settings-list' }) (
-            Li({ class: 'setting' }) (
-                H4({ class: 'title' }) ("Background texture"),
-
-                Ul({ class: 'content background-list' }) (
-                    Li({ class: 'list-item active', 'data-select': 'none' }) (
-                        Div({ class: 'image bg-none' }),
-
-                        Small({ class: 'label' }) ("None")
-                    ),
-
-                    Li({ class: 'list-item', 'data-select': 'paper' }) (
-                        Div({ class: 'image bg-paper' }),
-
-                        Small({ class: 'label' }) ("Paper")
-                    ),
-                ),
-
-                Blockquote({ class: 'blockquote-warning' }) (
-                    Small({ style: 'display: block' }) (
-                        "The `paper` texture doesn't look great with dark backgrounds"
-                    )
-                )
-            )
-        )
-    ));
-
-    return (
-        Div({ popover: 'auto', id: READING_PAGE_SETTINGS_DIALOG_ID }) (
-            Div({ class: 'reading-view-dialog' }) (
-                H1() ("Reading settings"),
-
-                BackgroundSettings()
-            )
-        )
-    );
-});
-
-const OpenSettingsDialog = Composable(() => {
-    return Button({ popovertarget: READING_PAGE_SETTINGS_DIALOG_ID }) ("Open dialog");
-});
 
 export const ReadingView = Composable<ReadingPageProps>(self => {
     const { matter, documentProperties, scripts } = self.props!;
 
-    const styles = [];
+    const styles = [
+        { url: 'styles/reading-view.css' }
+    ];
+
     const dnsPrefetches = [];
 
     if (documentProperties?.blockquotes) {
@@ -124,8 +81,9 @@ export const ReadingView = Composable<ReadingPageProps>(self => {
         ),
 
         Body() (
-            SettingsDialog(),
-            OpenSettingsDialog(),
+            WebsiteHeader({
+                title: matter?.title ?? "Dayvid Albuquerque"
+            }),
 
             Main({ class: 'content', id: 'article-start' }) (
                 RawHTML(self.props?.htmlContent),

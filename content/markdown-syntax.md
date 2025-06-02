@@ -10,7 +10,7 @@ topic: Testing environment
 
 # Markdown Capabilities Demonstration
 
-:smile:
+A smile emoji: :smile:
 
 ## -1. Math
 Inline math is $\left(x^2-x=0\right)=0$

@@ -46,6 +46,6 @@ export class MarkdownTransformer {
         await mkdir(targetPath.dirname).catch(ignore);
         await writeFile(targetPath.value, viewHtml);
 
-        return TransformerResult.success();
+        return TransformerResult.success(targetPath);
     }
 }

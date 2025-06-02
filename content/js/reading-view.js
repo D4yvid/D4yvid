@@ -47,28 +47,28 @@ function observableState({ read, write }) {
 }
 
 /// Stores
-const BackgroundStore = {
+const FontStore = {
     read() {
-        return localStorage.getItem('bg-theme') ?? 'none'
+        return localStorage.getItem('current-font') ?? 'none'
     },
 
     write(value) {
-        localStorage.setItem('bg-theme', value)
+        localStorage.setItem('current-font', value)
     }
 };
 
 /// UI managers
 /**
- * @param {ObservableState} backgroundStore
+ * @param {ObservableState} fontStore
  * @param {HTMLUListElement} base
  */
-function manageBackgroundSelectionUI(backgroundStore) {
-    const base = document.querySelector('ul.background-list');
+function manageFontSelectionUI(fontStore) {
+    const base = document.querySelector('ul.font-list');
 
-    let previous = backgroundStore.value;
+    let previous = fontStore.value;
     const entries = base.querySelectorAll("li.list-item");
 
-    function updateBackgroundUI(value) {
+    function updateFontUI(value) {
         for (const entry of entries) {
             const select = entry.getAttribute('data-select');
 
@@ -81,8 +81,8 @@ function manageBackgroundSelectionUI(backgroundStore) {
             }
         }
 
-        document.body.classList.remove(`bg-${previous}`);
-        document.body.classList.add(`bg-${value}`);
+        document.body.classList.remove(`font-${previous}`);
+        document.body.classList.add(`font-${value}`);
 
         previous = value;
     }
@@ -94,7 +94,7 @@ function manageBackgroundSelectionUI(backgroundStore) {
         function onClick(event) {
             const selection = event.currentTarget.getAttribute('data-select');
 
-            backgroundStore.value = selection;
+            fontStore.value = selection;
         }
 
         for (const entry of entries) {
@@ -109,7 +109,7 @@ function manageBackgroundSelectionUI(backgroundStore) {
     setupEventListeners();
 
     // Listen for store changes
-    backgroundStore.listen(updateBackgroundUI);
+    fontStore.listen(updateFontUI);
 }
 
 function managePopover() {
@@ -125,12 +125,12 @@ function managePopover() {
 
 /// Initialization
 function initialize() {
-    const currentBackground = observableState(BackgroundStore);
+    const currentFont = observableState(FontStore);
 
-    manageBackgroundSelectionUI(currentBackground);
+    manageFontSelectionUI(currentFont);
     managePopover();
 
-    currentBackground.load();
+    currentFont.load();
 }
 
 initialize();

@@ -2,8 +2,12 @@ import * as path from "node:path";
 import { glob } from "glob";
 import { readFile, writeFile } from "node:fs/promises";
 import { cacheDirectory, contentDirectory } from "./index.js";
-import { joinPaths, Path } from "./path/path.js";
-import { statSync, existsSync } from "node:fs";
+import { joinPaths, Path, removeLeadingPathOf } from "./path/path.js";
+import { statSync, existsSync, readFileSync } from "node:fs";
+import { timeIt } from "./time/time.js";
+import { copyUnprocessedFiles, process } from "./processors/index.js";
+import { transform, writeUntransformedFiles } from "./transformers/index.js";
+import { config } from "./config.js";
 
 interface ContentFilesSettings {
     changedOnly?: boolean
@@ -22,6 +26,8 @@ interface FileMap {
     set(path: Path, lastChanged: number): void;
     save(): Promise<void>;
 }
+
+const ignorePatterns = readFileSync(config.contentIgnoreFile).toString().split("\n")
 
 async function fileMap(): Promise<FileMap> {
     const fileMapFile = joinPaths(cacheDirectory(), "file-map.json");
@@ -58,15 +64,25 @@ async function fileMap(): Promise<FileMap> {
     return fileMap;
 }
 
+export function isFilePathIgnored(path: Path): boolean {
+    const realPath = removeLeadingPathOf(path, contentDirectory());
+
+    for (const ignorePattern of ignorePatterns) {
+        if (!ignorePattern) continue;
+
+        const regex = new RegExp(ignorePattern);
+
+        if (regex.test(realPath.value))
+            return true;
+    }
+
+    return false;
+}
+
 export async function getContentFiles(settings?: ContentFilesSettings) {
-    const {
-        changedOnly,
-        ignorePatternsFile = ".contentignore" 
-    } = settings ?? {};
+    const { changedOnly, ignorePatternsFile } = settings ?? {};
 
-    const ignorePatterns = await readFile(ignorePatternsFile).then((item) => item.toString().split("\n"));
     const contentDirectoryPath = contentDirectory().value;
-
     const map = await fileMap();
 
     const globOptions = {
@@ -74,7 +90,7 @@ export async function getContentFiles(settings?: ContentFilesSettings) {
         cwd: contentDirectoryPath,
         nodir: true,
 
-        ignore: ignorePatterns,
+        ignore: ignorePatterns
     };
 
     let files = await glob(path.join("**", "*.*"), globOptions)
@@ -108,4 +124,37 @@ export async function getContentFiles(settings?: ContentFilesSettings) {
     map.save();
 
     return { files: files.map(f => f.path), fileMap: map };
+}
+
+export async function processContent({
+    files: inputFiles,
+    settings
+}: {
+    files?: Path[],
+    settings?: ContentFilesSettings 
+}) {
+    if (!inputFiles) console.log("Finding all files in", contentDirectory().value, "...");
+
+    const { files } = inputFiles ? { files: inputFiles } : await getContentFiles(settings);
+
+    const tasks: Promise<void>[] = [];
+
+    await timeIt `Processing took` (async () => {
+        for (const file of files) {
+            tasks.push(new Promise(async resolve => {
+                const processorResult = process(file);
+
+                if (!await copyUnprocessedFiles(processorResult))
+                    return resolve();
+
+                const transformResult = transform(processorResult);
+
+                await writeUntransformedFiles(transformResult);
+
+                return resolve();
+            }));
+        }
+
+        await Promise.all(tasks);
+    });
 }

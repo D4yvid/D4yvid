@@ -1,0 +1,190 @@
+.content {
+    width: min(80ch, 90%);
+    margin: auto;
+}
+
+div#reading-view-settings {
+    position: absolute;
+
+    align-items: center;
+    justify-content: center;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    border: none;
+    background: rgb(var(--bg0));
+    color: rgb(var(--fg0));
+
+    & .settings-header {
+        display: flex;
+
+        margin-block-end: 1rem;
+
+        align-items: center;
+        justify-content: space-between;
+
+        & h1 {
+            font-size: 24px;
+        }
+
+        & .close-icon {
+            width: 40px;
+            height: 40px;
+
+            background-position: center;
+            background-size: 24px;
+            background-repeat: no-repeat;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjMWYxZjFmIj48cGF0aCBkPSJtMjU2LTIwMC01Ni01NiAyMjQtMjI0LTIyNC0yMjQgNTYtNTYgMjI0IDIyNCAyMjQtMjI0IDU2IDU2LTIyNCAyMjQgMjI0IDIyNC01NiA1Ni0yMjQtMjI0LTIyNCAyMjRaIi8+PC9zdmc+);
+        }
+    }
+}
+
+.content-header {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    width: min(120ch, 100% - 4rem);
+    padding-block: 0.4rem;
+
+    margin-inline: auto;
+}
+
+.content-header h1 {
+    font-size: 1.1rem;
+    margin-inline: 0;
+    margin-block: 0;
+}
+
+.content-header nav {
+    display: flex;
+
+    gap: 0.4rem;
+}
+
+.content-header a {
+    padding-inline: .4rem;
+    padding-block: .2rem;
+}
+
+.content-header .open-dialog {
+    width: 40px;
+    height: 40px;
+
+    background-position: center;
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjMWYxZjFmIj48cGF0aCBkPSJtMzcwLTgwLTE2LTEyOHEtMTMtNS0yNC41LTEyVDMwNy0yMzVsLTExOSA1MEw3OC0zNzVsMTAzLTc4cS0xLTctMS0xMy41di0yN3EwLTYuNSAxLTEzLjVMNzgtNTg1bDExMC0xOTAgMTE5IDUwcTExLTggMjMtMTV0MjQtMTJsMTYtMTI4aDIyMGwxNiAxMjhxMTMgNSAyNC41IDEydDIyLjUgMTVsMTE5LTUwIDExMCAxOTAtMTAzIDc4cTEgNyAxIDEzLjV2MjdxMCA2LjUtMiAxMy41bDEwMyA3OC0xMTAgMTkwLTExOC01MHEtMTEgOC0yMyAxNXQtMjQgMTJMNTkwLTgwSDM3MFptNzAtODBoNzlsMTQtMTA2cTMxLTggNTcuNS0yMy41VDYzOS0zMjdsOTkgNDEgMzktNjgtODYtNjVxNS0xNCA3LTI5LjV0Mi0zMS41cTAtMTYtMi0zMS41dC03LTI5LjVsODYtNjUtMzktNjgtOTkgNDJxLTIyLTIzLTQ4LjUtMzguNVQ1MzMtNjk0bC0xMy0xMDZoLTc5bC0xNCAxMDZxLTMxIDgtNTcuNSAyMy41VDMyMS02MzNsLTk5LTQxLTM5IDY4IDg2IDY0cS01IDE1LTcgMzB0LTIgMzJxMCAxNiAyIDMxdDcgMzBsLTg2IDY1IDM5IDY4IDk5LTQycTIyIDIzIDQ4LjUgMzguNVQ0MjctMjY2bDEzIDEwNlptNDItMTgwcTU4IDAgOTktNDF0NDEtOTlxMC01OC00MS05OXQtOTktNDFxLTU5IDAtOTkuNSA0MVQzNDItNDgwcTAgNTggNDAuNSA5OXQ5OS41IDQxWm0tMi0xNDBaIi8+PC9zdmc+);
+}
+
+div#reading-view-settings:popover-open {
+    display: flex;
+}
+
+div.reading-view-dialog {
+    padding: 1rem 1.5rem;
+
+    width: min(100%, 600px);
+    height: min(100%, fit-content);
+
+    background: rgb(var(--bg1));
+
+    border: 1px solid rgb(var(--bg2));
+    border-radius: var(--rounded-corner);
+}
+
+ul.settings-list {
+    margin: unset;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+ul.settings-list h4.title {
+    margin: unset;
+
+    font-size: 16px;
+    color: rgb(var(--fg1));
+}
+
+li.setting {
+    display: flex;
+    flex-direction: column;
+
+    gap: .5rem;
+}
+
+ul.font-list {
+    margin: unset;
+    display: flex;
+
+    gap: .5rem;
+}
+
+ul.font-list li.list-item {
+    list-style: none;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+ul.font-list li.list-item .preview {
+    position: relative;
+    transition: var(--animation-duration) ease-in-out;
+
+    width: 100px;
+    min-height: 50px;
+
+    border-radius: var(--rounded-corner);
+    border: 2px solid rgb(var(--bg3));
+
+    text-align: center;
+
+    padding: .5rem;
+    overflow: clip;
+    white-space: nowrap;
+
+    font-family: var(--font-display);
+}
+
+ul.font-list li.list-item.active .preview {
+    border: 2px solid rgb(var(--blue));
+}
+
+ul.font-list li.list-item .preview-serif {
+    font-family: 'Source Serif 4', serif;
+}
+
+ul.font-list li.list-item .preview-mono {
+    font-family: 'Source Code Pro', monospace;
+}
+
+body.font-serif {
+    font-family: 'Source Serif 4', serif;
+}
+
+body.font-mono {
+    font-family: 'Source Code Pro', monospace;
+}
+
+@media (max-width: 600px) {
+    div.reading-view-dialog {
+        border: unset;
+        border-radius: 0;
+
+        width: 100%;
+        height: 100%;
+    }
+}

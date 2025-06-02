@@ -1,27 +1,47 @@
-import { watch } from "fs/promises";
+import { FileChangeInfo, watch } from "fs/promises";
 import { buildDirectory, contentDirectory } from "../index.js";
 import { joinPaths, Path } from "../path/path.js";
 import { default as express } from 'express';
-import { copyUnprocessedFiles, process } from "../processors/index.js";
-import { transform, writeUntransformedFiles } from "../transformers/index.js";
 import { ignore } from "../errors/ignore.js";
-import { Server } from "http";
-import { timeIt } from "../time/time.js";
 import { WebSocket, WebSocketServer } from "ws";
-import { getContentFiles } from "../content.js";
+import { isFilePathIgnored, processContent } from "../content.js";
+import { config } from "../config.js";
 
 let liveServer = false;
 
 async function startFileWatcher(signal: AbortSignal, emit: (path: Path) => any) {
-    const watcher = watch(contentDirectory().value, { signal, recursive: true });
+    const watcher = watch(contentDirectory().value, { signal, recursive: true, persistent: true });
 
     try {
-        for await (const event of watcher) {
-            if (!event.filename) continue;
-            if (parseInt(event.filename).toString() == event.filename) continue;
-            if (event.eventType != 'change') continue;
+        let lastEvent = 0;
 
-            emit(joinPaths(contentDirectory(), event.filename));
+        async function handleEvent(event: FileChangeInfo<string>) {
+            if (!event.filename)
+                return;
+
+            if (parseInt(event.filename).toString() == event.filename)
+                /// Sometimes it returns a inode number, and i don't know why.
+                return;
+
+            if (Date.now() - lastEvent < 100) {
+                return;
+            }
+
+            const path = joinPaths(contentDirectory(), event.filename);
+
+            if (config.liveServer.ignoreChanges(path))
+                return;
+
+            if (isFilePathIgnored(path))
+                return;
+
+            lastEvent = Date.now();
+
+            emit(path);
+        }
+
+        for await (const event of watcher) {
+            handleEvent(event);
         }
     } catch {
         ignore();
@@ -41,69 +61,45 @@ async function startWebSocketServer(): Promise<() => void> {
     });
 
     return () => {
+        console.log('HOTRELOAD: Hot reloading %d client%s', clients.length, clients.length == 1 ? '' : 's');
+
         for (const client of clients) {
-            client.send(JSON.stringify({ reload: true }));
+            client.send(Buffer.from(`reload`));
         }
     };
 }
-
-async function processFiles(files: Path[]) {
-    console.log(`Processing ${files}`);
-
-    await timeIt `Processing took` (async () => {
-        await Promise.all(
-            files.map(process)
-                .filter(copyUnprocessedFiles)
-                .map(transform)
-                .filter(writeUntransformedFiles)
-        );
-    });
-
-    console.log("Processed %d files", files.length);
-}
-
 
 export function isLiveServerMode() {
     return liveServer;
 }
 
 export async function startLiveServer(port: number) {
+    const signal = new AbortController();
+    const server = express();
+    const reloadClients = await startWebSocketServer();
+
     liveServer = true;
 
-    console.log("Finding all files in", contentDirectory().value, "...");
-    const { files: list } = await getContentFiles({ changedOnly: false });
+    await processContent({});
 
-    await timeIt `Processing took` (async () => {
-        await Promise.all(
-            list.map(process)
-                .filter(copyUnprocessedFiles)
-                .map(transform)
-                .filter(writeUntransformedFiles)
-        );
+    startFileWatcher(signal.signal, async path => {
+        console.log(`Path ${path.value} changed, regenerating...`)
+
+        processContent({ files: [path] }).then(() => reloadClients());
     });
 
-    const signal = new AbortController();
+    server.use(express.static(buildDirectory().value));
 
-    let httpServer: Server;
+    let httpServer = server.listen(port, () => {
+        console.log(`HTTP server started on http://0.0.0.0:${port}`);
+    });
 
     globalThis.process.on('SIGINT', () => {
         console.log("\nExiting gracefully...");
 
         httpServer.close();
         signal.abort();
-    });
 
-    const signalReload = await startWebSocketServer();
-
-    startFileWatcher(signal.signal, path => {
-        processFiles([path]).then(() => signalReload());
-    });
-
-    const server = express();
-
-    server.use(express.static(buildDirectory().value));
-
-    httpServer = server.listen(port, () => {
-        console.log(`HTTP server started on http://0.0.0.0:${port}`);
+        globalThis.process.exit(0);
     });
 }

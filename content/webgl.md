@@ -7,12 +7,12 @@ const ctx = canvas.getContext("2d");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-ctx.fillStyle = "green";
+ctx.fillStyle = "red";
 
 let x = 0, dx = 1;
 let y = 0, dy = 1;
 
-let size = 10;
+let size = 50;
 
 setInterval(() => {
     if (x + size > canvas.width) {
