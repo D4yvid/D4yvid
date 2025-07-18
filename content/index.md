@@ -1,3 +1,5 @@
 - [another-node](another-node.md)
 - [markdown-syntax](markdown-syntax.md)
 - [index](index.md)
+
+![](https://placehold.co/1024)
